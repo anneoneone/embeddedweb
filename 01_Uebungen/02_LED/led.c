@@ -3,6 +3,10 @@
 #include <unistd.h>
 #include <string.h>
 
+int usage() {
+	printf("Usage: ./gpio_LED [on / off / toggle]");
+	return -1;
+}
 
 int setLed(struct gpiod_line* line, int ledIsOn) {
 	return  gpiod_line_set_value(line, ledIsOn);
@@ -22,6 +26,10 @@ int toggleLed(struct gpiod_line* line) {
 }
 
 int main(int argc, char *argv[]){
+	//if (argc != 2 ) {
+	//	usage();
+	//}
+
 	struct gpiod_chip *chip;
 	struct gpiod_line *line;
 

@@ -24,8 +24,10 @@
 #include <stdlib.h>
 #include <string.h>
 #include <sys/stat.h>
-#include <gpiod.h>
 #include <unistd.h>
+#include <fcntl.h>
+#include <errno.h>
+#include <gpiod.h>
 
 #define LED_RED 16
 #define LED_GRN 20
@@ -45,24 +47,71 @@ static void print_help(void) {
 
 
 // Set the given value on the line
-int set_line_value(struct gpiod_line *line, int value) {
+int set_line_value(struct gpiod_line *line, int pin_number, int value) {
   int req, set;
 
-  // Reserve line for write access, 1 = default value
+  // Reserve line for write access
   req = gpiod_line_request_output(line, "led_set", value);
   if (req) {
     fprintf(stderr, "Could not reserve the line\n");
-    return -1;
+    exit(EXIT_FAILURE);
   }
 
-  // Write a 1 => turn led on
+  // Write the value 
   set = gpiod_line_set_value(line, value);
   if (set){
     fprintf(stderr, "Failed to turn on the led\n");
-    return -1;
+    exit(EXIT_FAILURE);
+  }
+
+  // Create the file name
+  char file[15];
+  sprintf(file,"/tmp/pin_%i", pin_number); 
+
+  // Create or delete file representing the status
+  if (0 == value) {
+    // Delete file
+    unlink(file);
+
+  }else {
+    // Create file
+    int fd = open(file, O_WRONLY|O_CREAT);
+
+    /*
+      As we don't set permissions when creating the file,
+      we get a "access error" when trying to open the file
+      and it already exists (tunring led on, when it is).
+      Thus we filter this error out.
+    */
+    if (fd < 0 && errno != EACCES) {
+      fprintf(stderr, "Failed to open file\n");
+      perror("ERROR: ");
+      exit(EXIT_FAILURE);
+    }
+    close(fd);
   }
 
   return 0;
+}
+
+
+int get_led_status(int pin_number) {
+  char file[15];
+  int stat_result;
+
+  sprintf(file, "/tmp/pin_%i", pin_number);
+  struct stat stats;
+  stat_result = stat(file, &stats);
+
+  if (-1 == stat_result && errno == ENOENT) {
+    // File does not exist -> means led is off
+    printf("File not found -> led is off.\n");
+    return 0;
+  } else {
+    // File does exist -> means led is on 
+    printf("File found -> led is on\n");
+    return 1;
+  }
 }
 
 
@@ -109,25 +158,23 @@ int main(int argc, char *argv[]) {
 
   // Perform action according to the second argument
   if (0 == strcmp(argv[2], "toggle")) {
-    // Check if a status file exists
-    char file[] = "led_";
-    strcat(file, argv[1])
+    int val = get_led_status(active_led);
 
-    int stat = stat
-    
+    if (0 == val) set_line_value(line, active_led, 1);
+    if (1 == val) set_line_value(line, active_led, 0);
   }else if (0 == strcmp(argv[2], "on")) {
     // Turn the LED on
-    set_line_value(line, 1);
+    set_line_value(line, active_led, 1);
   }else if (0 == strcmp(argv[2], "off")) {
     // Turn the LED off
-    set_line_value(line, 0);
+    set_line_value(line, active_led, 0);
   }else {
     print_help();
     exit(EXIT_FAILURE);
   }
 
-
   // Clean up 
   gpiod_chip_close(chip);
+
   exit(EXIT_SUCCESS);
 }

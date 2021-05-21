@@ -1,7 +1,7 @@
-BIN = led_formular
+BIN = led_ajax
 CFILES = html.c gpio.c
 
-led_formular: $(CFILES) -lgpiod
+led_ajax: $(CFILES) -lgpiod
 
 clean:
 	$(RM) *~ *.o $(BIN)

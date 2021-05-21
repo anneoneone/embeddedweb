@@ -17,6 +17,7 @@
 #include <unistd.h>
 #include <fcntl.h>
 #include <errno.h>
+#include <string.h>
 #include <gpiod.h>
 
 #include "html.h"
@@ -35,14 +36,16 @@ static int set_line_value(struct gpiod_line *line, int pin_number, int value) {
   // Reserve line for write access
   req = gpiod_line_request_output(line, "led_set", value);
   if (req) {
-    html_print_error("Could not reserve the line\n");
+    printf("Error: Could not reserve the line\n");
+    printf("ERRNO: %s<br>", strerror(errno));
     exit(EXIT_FAILURE);
   }
 
   // Write the value 
   set = gpiod_line_set_value(line, value);
   if (set){
-    html_print_error("Failed to turn on the led\n");
+    printf("Error: Failed to turn on the led\n");
+    printf("ERRNO: %s<br>", strerror(errno));
     exit(EXIT_FAILURE);
   }
 
@@ -66,7 +69,8 @@ static int set_line_value(struct gpiod_line *line, int pin_number, int value) {
       Thus we filter this error out.
     */
     if (fd < 0 && errno != EACCES) {
-      html_print_error("Failed to open file\n");
+      printf("Error: Failed to open file\n");
+      printf("ERRNO: %s<br>", strerror(errno));
       exit(EXIT_FAILURE);
     }
     close(fd);
@@ -113,7 +117,8 @@ void gpio_handle_led_actions(struct Parsed_actions pac) {
   // Open the chip (gpiochip0 is the only one on the pi)
 	chip = gpiod_chip_open("/dev/gpiochip0");
 	if (NULL == chip) {
-    html_print_error("Failed to get chip");
+    printf("Error: Failed to get chip");
+    printf("ERRNO: %s<br>", strerror(errno));
     exit(EXIT_FAILURE);
   }
 
@@ -121,7 +126,7 @@ void gpio_handle_led_actions(struct Parsed_actions pac) {
     // Get handle for LED line
 	  struct gpiod_line *line = gpiod_chip_get_line(chip, LED_RED);
 	  if (!line) {
-      html_print_error("Failed to get line");
+      printf("Error: Failed to get line");
       exit(EXIT_FAILURE);
     }
 
@@ -141,7 +146,9 @@ void gpio_handle_led_actions(struct Parsed_actions pac) {
     // Get handle for LED line
 	  struct gpiod_line *line = gpiod_chip_get_line(chip, LED_GRN);
 	  if (!line) {
-      html_print_error("Failed to get line");
+      printf("Error: Failed to get line");
+      printf("ERRNO: %s<br>", strerror(errno));
+      
       exit(EXIT_FAILURE);
     }
 

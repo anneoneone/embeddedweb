@@ -22,32 +22,36 @@
     When toggling we can check if the file exist and behave accordingly.
 
   Author: Lennart Brun
-  Date  : 10.05.2021
+  Date  : 21.05.2021
 
 */
+#include <stdio.h>
+
 #include "html.h"
 #include "gpio.h"
 
-#define LED_RED 16
-#define LED_GRN 20
-
 
 int main() {
+
+  printf("Content-type: text/plain\n\n");
 
   // Check the request method (1-GET, 0-POST)
   int req_m = html_get_request_method();
   if (req_m == 1) {
     // Just send HTML
-    html_print();
+    //html_print();
 
   }else if(req_m == 0){
     // Handle stdin
     struct Parsed_actions pac = html_parse_stdin();
     gpio_handle_led_actions(pac);
-    html_print();
+
+    printf("red=%d&", gpio_get_led_status(LED_RED));
+    printf("green=%d", gpio_get_led_status(LED_GRN));
+     
 
   }else {
-    html_print_error("Unknown request method");
+    printf("Error: Unknown request method");
   }
 
   exit(EXIT_SUCCESS);

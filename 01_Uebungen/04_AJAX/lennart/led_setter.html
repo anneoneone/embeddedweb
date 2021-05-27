@@ -1,0 +1,52 @@
+<html>
+  <title>LED Setter</title>
+
+  <script src="led_setter.js"></script>
+
+  <body>
+    
+    <h2>Current state:</h2>
+    
+    <table style="width: 300px;">
+      <tr>
+        <td>RED LED</td>
+        <td>GREN LED</td>
+      </tr>
+      <tr>
+        <td><span id="redled" style="height: 25px; width: 25px; border-radius: 50%; display: inline-block; background-color: grey;"><span></td>
+        <td><span id="grnled" style="height: 25px; width: 25px; border-radius: 50%; display: inline-block; background-color: grey;"><span></td>
+      </tr>
+    </table>
+
+    
+    <h2>Manipulate state:</h2>
+
+    <table>
+      <tr>
+        <td>
+          <fieldset>
+            <legend>RED LED</legend>
+
+            <button type='button' onclick="turnOn('red')">Turn on</button><br>
+            <button type='button' onclick="turnOff('red')">Turn off</button><br>
+            <button type='button' onclick="toggle('red')">Toggle</button><br>
+
+          </fieldset>
+
+        </td>
+        <td>
+          <fieldset>
+            <legend>GREEN LED</legend>
+
+            <button type='button' onclick="turnOn('green')">Turn on</button><br>
+            <button type='button' onclick="turnOff('green')">Turn off</button><br>
+            <button type='button' onclick="toggle('green')">Toggle</button><br>
+
+          </fieldset>
+
+        </td>
+      </tr>
+    </table>
+    
+  </body>
+</html>

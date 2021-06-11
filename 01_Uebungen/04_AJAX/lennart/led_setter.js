@@ -6,7 +6,7 @@ function turnOn(color) {
       handleResponse(this.responseText);
     }
   };
-  req.open("POST", "/cgi-bin/led_formular", true);
+  req.open("POST", "/cgi-bin/led_ajax", true);
 
   req.send(color + "=on"); 
 }
@@ -19,7 +19,7 @@ function turnOff(color) {
       handleResponse(this.responseText);
     }
   };
-  req.open("POST", "/cgi-bin/led_formular", true);
+  req.open("POST", "/cgi-bin/led_ajax", true);
 
   req.send(color + "=off"); 
 }
@@ -32,7 +32,7 @@ function toggle(color) {
       handleResponse(this.responseText);
     }
   };
-  req.open("POST", "/cgi-bin/led_formular", true);
+  req.open("POST", "/cgi-bin/led_ajax", true);
 
   req.send(color + "=toggle"); 
 }

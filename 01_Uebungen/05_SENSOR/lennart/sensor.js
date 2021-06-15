@@ -9,6 +9,12 @@ function get_env_values() {
   };
   req.open("GET", "/cgi-bin/sensor.py");
   req.send()
+  
+  // Set interval to get the environment values each 5 seconds
+  setInterval(() => {
+    req.open("GET", "/cgi-bin/sensor.py");
+    req.send();
+  }, 5000)
 }
 
 
@@ -20,5 +26,4 @@ function handleResponse(resp) {
   document.getElementById("hum").innerHTML = data["hum"];
 }
 
-// Set interval to get the environment values each 5 seconds
-setInterval(get_env_values, 5000)
+get_env_values()

@@ -9,7 +9,7 @@ db.defaults({ posts: [] })
 
 const mqtt = require('mqtt');
 const client = mqtt.connect("mqtt://test.mosquitto.org");
-client.subscribe("/anton/plantcare",{qos:1});
+client.subscribe("/anton/forgottenPlants",{qos:1});
 
 fahrenheitToCelsius = (fahrenheit) => {
     var fTempVal = parseFloat(fahrenheit);
@@ -25,14 +25,14 @@ client.on('message', function (topic, message) {
         var json = JSON.parse(stringBuf);
         console.log(json);
 
-        console.log('write post');
-        db.get('posts').push({ 
-            room: json.sensor, 
-            humidity: json.data, 
-            time: json.time 
-        }).write()
-        console.log('write post2');
-    
+        if (json.sensor) {
+            db.get('posts').push({ 
+                sensorType: json.sensor, 
+                humidity: json.data,
+                pumpStatus: json.pumpStatus, 
+                time: json.time 
+            }).write()
+        }
         /*
         if (json.model === 'inFactory sensor') {
             if (json.id === 91 || json.id === 32) {
@@ -51,10 +51,14 @@ client.on('message', function (topic, message) {
         }
         */
     } catch (e) {
-        console.error(":(")
+        console.error("error :(")
         console.error(stringBuf);
     }
-})
+});
+
+app.get('/api', (req, res) => {
+    res.send(db.get('posts'));
+});
 
 // test
 app.get('/', function (req, res) {

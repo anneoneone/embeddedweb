@@ -1,0 +1,50 @@
+<html>
+  <title>LED Setter</title>
+  
+  <body>
+    
+    <h2>Current state: {{ n }}</h2>
+    
+    <table style="width: 300px;">
+      <tr>
+        <td>RED LED</td>
+        <td>GREN LED</td>
+      </tr>
+      <tr>
+        <td><span id="redled" style="height: 25px; width: 25px; border-radius: 50%; display: inline-block; background-color: grey;"><span></td>
+        <td><span id="grnled" style="height: 25px; width: 25px; border-radius: 50%; display: inline-block; background-color: grey;"><span></td>
+      </tr>
+    </table>
+
+    
+    <h2>Manipulate state:</h2>
+
+    <table>
+      <tr>
+        <td>
+          <fieldset>
+            <legend>RED LED</legend>
+
+            <button type='button' onclick="turn('red', 'on')">Turn on</button><br>
+            <button type='button' onclick="turn('red', 'off')">Turn off</button><br>
+
+          </fieldset>
+
+        </td>
+        <td>
+          <fieldset>
+            <legend>GREEN LED</legend>
+
+            <button type='button' onclick="turn('green', 'on')">Turn on</button><br>
+            <button type='button' onclick="turn('green', 'off')">Turn off</button><br>
+
+          </fieldset>
+
+        </td>
+      </tr>
+    </table>
+  
+  <script src="{{ url_for('static', filename='js/led.js') }}"></script>
+    
+  </body>
+</html>

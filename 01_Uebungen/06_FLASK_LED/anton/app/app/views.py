@@ -2,6 +2,9 @@ from app import app
 from flask import render_template
 from flask import request, redirect
 from datetime import datetime
+import RPi.GPIO as GPIO
+# from app import setLed
+# import setLed
 
 # --- FILTERS ---
 
@@ -24,6 +27,31 @@ def index():
 def about():
     return render_template("public/index.html")
 
+@app.route("/controlLed", methods=["GET", "POST"])
+def controlLed():
+    if request.method == "POST":
+        if (request.is_json):
+            payload = request.get_json()
+            ledState = payload["ledState"]
+            print(ledState)
+        else:
+            req = request.form
+
+            ledState = req.get("led")
+
+
+        channel = 20
+        GPIO.setmode(GPIO.BCM)
+        GPIO.setup(channel, GPIO.OUT)
+        GPIO.output(channel, int(ledState))
+
+        return redirect(request.url)
+
+    return render_template(
+        "public/controlLed.html"
+    )
+
+
 @app.route("/sign-up", methods=["GET", "POST"])
 def sign_up():
     if request.method == "POST":
@@ -42,7 +70,7 @@ def sign_up():
             feedback = f"Missing fields for {', '.join(missing)}"
             return render_template("public/sign_up.html", feedback=feedback)
 
-        username = req.get("username")
+        name = req.get("name")
         email = req.get("email")
         password = req.get("password")
 

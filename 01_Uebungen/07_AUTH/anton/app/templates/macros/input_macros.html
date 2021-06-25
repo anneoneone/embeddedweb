@@ -1,0 +1,15 @@
+{% macro input(label="", type="text", id="", name="", placeholder="") -%}
+    <div class="form-group">
+        <label>{{ label }}</label>
+        <input type="{{ type }}" class="form-control" id="{{ id }}" name="{{ name }}" placeholder="{{ placeholder }}">
+    </div>
+{%- endmacro %}
+
+{% macro radio(label="", type="radio", id="", name="", placeholder="", value="", onclick="") -%}
+    <div class="form-check">
+        <input class="form-check-input" type="{{ type }}" name="{{ name }}" id="{{ id }}" placeholder="{{ placeholder }}" value="{{ value }}" onclick="{{ onclick }}">
+        <label class="form-check-label" for="exampleRadios1">
+          {{ label }}
+        </label>
+      </div>
+{%- endmacro %}

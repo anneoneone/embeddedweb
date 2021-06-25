@@ -1,0 +1,12 @@
+body {
+  background-color: #0F9955;
+}
+
+#img_test {
+  position: relative;
+  height: 500px;
+}
+
+.niceDiv {
+  background-color: #5F995F;
+}

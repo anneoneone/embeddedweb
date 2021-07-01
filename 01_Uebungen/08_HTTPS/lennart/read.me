@@ -1,0 +1,18 @@
+To use Gunicorn only locally we need to use an proxy pass in the apache config.
+Therefore the module proxy_http needs to be loaded:
+`sudo a2enmod proxy_http`
+
+Apache config:
+`cd /etc/apache2/sites-enabled`
+There should be a file called `000-default.conf`
+with the content:
+```
+<VirtualHost *:80>
+	#ServerName www.example.com
+
+	ServerAdmin webmaster@localhost
+	DocumentRoot /var/www/html
+   	ProxyPreserveHost On
+	ProxyPass / http://localhost:8000/
+</VirtualHost>
+```

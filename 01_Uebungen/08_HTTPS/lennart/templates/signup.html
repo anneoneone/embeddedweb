@@ -1,0 +1,36 @@
+<html>
+  <title>LED Signup</title>
+
+  <head>
+    <link rel="stylesheet" href="{{ url_for('static', filename='/css/main.css') }}">
+  </head>
+  
+  <body>
+  <h1>Signup</h1>
+  <h3>... to get an account.</h2>
+ 
+    <div class="area">
+      <form action="/signup" method="POST">
+        <label>Username</label>
+        <input name="username" type="text">
+        
+        <label>Password</label>
+        <input name="password" type="password">        
+
+        <!-- Space for error or success messages -->
+        {% with messages = get_flashed_messages(with_categories=true) %}
+          {% if messages %}
+            <ul class=flashes>
+            {% for category, message in messages %}
+              <li class="{{ category }}">{{ message }}</li>
+            {% endfor %}
+            </ul>
+          {% endif %}
+        {% endwith %}
+
+        <button type="submit">Create account</button>
+      </form>
+    </div>
+
+  </body>
+</html>

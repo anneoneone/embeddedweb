@@ -1,0 +1,39 @@
+<html>
+  <title>LED Login</title>
+
+  <head>
+    <link rel="stylesheet" href="{{ url_for('static', filename='/css/main.css') }}">
+  </head>
+  
+  <body>
+  
+  <h1>Login</h1>
+  <h3>... to access the LED controller.</h2>
+
+    <div class="area">
+      <form action="/login" method="POST">
+        <label>Username</label><br>
+        <input name="username" type="text"><br>
+        
+        <label>Password</label><br>
+        <input name="password" type="password">
+        
+        <!-- Space for error or success messages -->
+        {% with messages = get_flashed_messages(with_categories=true) %}
+          {% if messages %}
+            <ul class=flashes>
+            {% for category, message in messages %}
+              <li class="{{ category }}">{{ message }}</li>
+            {% endfor %}
+            </ul>
+          {% endif %}
+        {% endwith %}
+
+        <button type="submit">Login</button>
+      </form>
+
+      <a href="/signup">Create account</a>
+  </div>
+    
+  </body>
+</html>

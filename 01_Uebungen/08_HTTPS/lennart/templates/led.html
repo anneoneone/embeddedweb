@@ -1,0 +1,64 @@
+<html>
+  <title>LED Setter</title>
+
+  <head>
+    <link rel="stylesheet" href="{{ url_for('static', filename='/css/main.css') }}">
+  </head>
+  
+  <body>
+
+    <div class="header">
+      {% if session["username"] %}
+        Logged in as: {{ session["username"] }}
+      {% endif  %}
+      <a href="/logout" class="logout">Logout</a>
+    </div>
+    
+    <div class="area">
+      <h2>Current state: </h2>
+      
+      <table>
+        <tr>
+          <td>RED LED</td>
+          <td>GREN LED</td>
+        </tr>
+        <tr>
+          <td><span id="redled" style="height: 25px; width: 25px; border-radius: 50%; display: inline-block; background-color: grey;"><span></td>
+          <td><span id="grnled" style="height: 25px; width: 25px; border-radius: 50%; display: inline-block; background-color: grey;"><span></td>
+        </tr>
+      </table>
+
+      
+      <h2>Manipulate state:</h2>
+
+      <table>
+        <tr>
+          <td>
+            <fieldset>
+              <legend>RED LED</legend>
+
+              <button type='button' onclick="turn('red', 'on')">Turn on</button><br>
+              <button type='button' onclick="turn('red', 'off')">Turn off</button><br>
+
+            </fieldset>
+
+          </td>
+          <td>
+            <fieldset>
+              <legend>GREEN LED</legend>
+
+              <button type='button' onclick="turn('green', 'on')">Turn on</button><br>
+              <button type='button' onclick="turn('green', 'off')">Turn off</button><br>
+
+            </fieldset>
+
+          </td>
+        </tr>
+      </table>
+  
+    </div>
+
+  <script src="{{ url_for('static', filename='js/led.js') }}"></script>
+    
+  </body>
+</html>

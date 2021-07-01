@@ -1,0 +1,83 @@
+/*
+  Styling sources:
+    https://www.c-sharpcorner.com/article/creating-a-simple-login-page-using-html-and-css/
+*/
+
+.success {
+  color: #3ffc32;
+  font-weight: bold;
+}
+
+.warning {
+  color: #e27909;
+  font-weight: bold;
+}
+
+.error {
+  color: #820101;
+  font-weight: bold;
+}
+
+body {
+  background-color: #5ee5ce;
+}
+
+h1 {
+  text-align: center;
+  color: #126b4e;
+}
+
+h3 {
+  text-align: center;
+  color: #126b4e;
+}
+
+.area {
+  width: 40%;
+  background: #126b4e;
+  margin: auto; 
+  padding: 20px;
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+label {
+  color: #5ee5ce;
+  font-weight: 600;
+  margin: 20px 0 20px 0;
+}
+
+input {
+  width: 80%;
+  padding: auto;
+  margin-top: 5px;
+  margin-bottom: 10px;
+  border: none;
+  border-radius: 3px;
+}
+
+button {
+  width: 80%;
+  height: 30px;
+  margin-top: 20px;
+  margin-bottom: 20px;
+  border-radius: 20px;
+  
+}
+
+form {
+  margin-bottom: 0px;
+}
+
+.header {
+  height: 30px;
+  background-color: #126b4e;
+  margin-bottom: 10px;
+  color: #5ee5ce;
+} 
+
+a.logout {
+  position: absolute;
+  right: 20px;
+  color: #5ee5ce;
+}

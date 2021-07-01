@@ -16,3 +16,22 @@ with the content:
 	ProxyPass / http://localhost:8000/
 </VirtualHost>
 ```
+
+# HTTPS:
+
+Source for SSL taks:
+https://www.ryangeddes.com/how-to-guides/linux/how-to-create-a-self-signed-ssl-certificate-on-linux/
+
+Create certificate with openssl
+`openssl req -newkey rsa:4096 -x509 -sha256 -days 365 -nodes -out ryanserver1.crt -keyout ryanserver1.key`
+
+Add certificate to apache:
+* modify /etc/apache2/sites-available/default-ssl.conf by adding path to key and crt file
+* also remove some security checks:
+  SSLProxyVerify None  -> allow self signed certifficate
+  SSLProxyCheckPeerName off  -> do not check if CN matches FQDN
+* save and activate with `sudo a2ensite default-ssl.conf
+* enabel module `sudo a2enmod ssl`
+* restart apache
+
+Start gunicorn with: gunicorn app:app --keyfile led_server.key --certfile led_server.crt
